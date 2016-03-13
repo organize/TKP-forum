@@ -32,10 +32,6 @@ public class Forum {
         /* Main database instance */
         Database database = new Database(Constants.POSTGRES_URL);
         
-        if(Constants.createTables) {
-            createPostgreTables(database);
-        }
-        
         /* Relative location to our misc. files */
         staticFileLocation("public");
         
@@ -45,26 +41,4 @@ public class Forum {
         /* Initialize Spark */
         init();
     }
-    
-    private static void createPostgreTables(Database database) {
-        try(Connection c = database.getConnection()) {
-            Statement s = c.createStatement();
-            for(String input : commands()) {
-                s.executeUpdate(input);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("executed postgres");
-    }
-    
-    private static List<String> commands() {
-        List<String> result = new ArrayList<>();
-        result.add("INSERT INTO subject(name) VALUES ('Xbox');");
-        result.add("INSERT INTO subject(name) VALUES ('Animals');");
-        result.add("INSERT INTO subject(name) VALUES ('Amnesty');");
-        result.add("INSERT INTO subject(name) VALUES ('Cooking');");
-        return result;
-    }
-
 }

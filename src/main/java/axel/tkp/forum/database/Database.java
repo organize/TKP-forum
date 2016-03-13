@@ -16,13 +16,8 @@ public class Database {
     private String address;
     
     public Database(String address) throws Exception {
-        if(address.contains("postgre")) {
-            Class.forName("org.postgresql.Driver");
-        } else {
-            Class.forName("org.sqlite.JDBC");
-        }
+        Class.forName("org.postgresql.Driver");
         this.address = address;
-        this.connection = getConnection();
     }
     
     public Connection getConnection() throws Exception {

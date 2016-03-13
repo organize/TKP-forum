@@ -6,6 +6,8 @@ import axel.tkp.forum.util.RequestBinder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import spark.Spark;
 import static spark.Spark.*;
 
@@ -46,26 +48,32 @@ public class Forum {
         init();
     }
     
-    private static void createPostgreTables(Connection connection) {
-        try(Statement s = connection.createStatement()) {
-            s.executeUpdate("DROP TABLE Subject;");
-            s.executeUpdate("DROP TABLE Message;");
-            s.executeUpdate("DROP TABLE Thread;");
-            s.executeUpdate("CREATE TABLE Subject(id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
-            s.executeUpdate("CREATE TABLE Thread(id SERIAL PRIMARY KEY, "
-                    + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
-                    + "FOREIGN KEY latestPost REFERENCES Message(time));");
-            s.executeUpdate("CREATE TABLE Message(uid SERIAL PRIMARY KEY, "
-                    + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
-                    + " time TIMESTAMP, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");
-            s.executeUpdate("INSERT INTO Subject(name) VALUES ('Programming');");
-            s.executeUpdate("INSERT INTO Subject(name) VALUES ('Music');");
-            s.executeUpdate("INSERT INTO Subject(name) VALUES ('Politics');");
-            s.executeUpdate("INSERT INTO Subject(name) VALUES ('Sports');");
+    private static void createPostgreTables(Database database) {
+        try(Connection c = database.getConnection()) {
+            Statement s = c.createStatement();
+            for(String input : commands()) {
+                s.executeUpdate(input);
+            }
         } catch(Exception e) {
             e.printStackTrace();
         }
         System.out.println("executed postgres");
+    }
+    
+    private static List<String> commands() {
+        List<String> result = new ArrayList<>();
+        result.add("CREATE TABLE Subject (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
+        result.add("CREATE TABLE Thread(id SERIAL PRIMARY KEY, "
+            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
+            + "FOREIGN KEY latestPost REFERENCES Message(time));");
+        result.add("CREATE TABLE Message(uid SERIAL PRIMARY KEY, "
+            + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
+            + " time TIMESTAMP, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");
+        result.add("INSERT INTO Subject(name) VALUES ('Programming');");
+        result.add("INSERT INTO Subject(name) VALUES ('Music');");
+        result.add("INSERT INTO Subject(name) VALUES ('Politics');");
+        result.add("INSERT INTO Subject(name) VALUES ('Sports');");
+        return result;
     }
 
 }

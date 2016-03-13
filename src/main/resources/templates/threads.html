@@ -24,7 +24,7 @@
 				</tr>
 				<tr th:each="thread: ${threads}">
 					<td>
-						<a th:href="|${baseUrl}/thread?threadId=${thread.threadId}&page=1|">
+						<a th:href="|${baseUrl}/thread?threadId=${thread.threadId}&amp;page=1|">
 							<i th:text="${thread.title}"/>
 						</a>
 					</td>

@@ -122,6 +122,7 @@ public class RequestBinder {
             String sender = req.queryParams("name");
             String content = req.queryParams("content");
             
+            /* Assert we have a clean input */
             if(threadTitle == null || threadTitle.equals("")) {
                 halt(403, "You must provide a title.");
             }
@@ -132,23 +133,23 @@ public class RequestBinder {
                 halt(403, "You must provide a comment.");
             }
             
-            ForumThread thread = new ForumThread(0, threadTitle, 
-                subjectId, "", 0);
+            ForumThread thread = new ForumThread(0, threadTitle, subjectId, "", 0);
             threadDao.create(thread);
             
             int threadId = threadDao.count();
-            
-            ForumMessage message 
-                    = new ForumMessage(0, content, sender, "", threadId);
+            ForumMessage message = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);
             
             res.redirect(Constants.BASE_PATH + "/thread?threadId=" + threadId + "&page=1");
             return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
         
+        /* Creating a new subject */
         post("/newSubject", (req, res) -> {
             String title = req.queryParams("subjectName");
             Map map = new HashMap();
+            
+            /* Assert we have a clean input */
             if(title == null || title.equals("") 
                     || title.replaceAll(" ", "").equals("")) {
                 halt(403, "Title cannot be empty");

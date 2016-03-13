@@ -87,7 +87,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
                 .createStatement().executeQuery("SELECT * FROM message "
                 + "WHERE threadId = '" + threadId + "' ORDER BY uid DESC LIMIT 1;");
         if(rs.next()) {
-            return rs.getTimestamp("time").toString().split(".")[0];
+            return rs.getTimestamp("time").toString();
         }
         return "this thread has no posts yet!";
     }

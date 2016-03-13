@@ -62,17 +62,18 @@ public class Forum {
     
     private static List<String> commands() {
         List<String> result = new ArrayList<>();
-        result.add("CREATE TABLE Subject (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
-        result.add("CREATE TABLE Thread(id SERIAL PRIMARY KEY, "
-            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
-            + "FOREIGN KEY(latestPost) REFERENCES Message(time));");
-        result.add("CREATE TABLE Message(uid SERIAL PRIMARY KEY, "
+        result.add("drop table subject");
+        result.add("CREATE TABLE subject (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
+        result.add("CREATE TABLE thread(id SERIAL PRIMARY KEY, "
+            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES subject(id), "
+            + "FOREIGN KEY(latestPost) REFERENCES message(time));");
+        result.add("CREATE TABLE message(uid SERIAL PRIMARY KEY, "
             + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
             + " time TIMESTAMP, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");
-        result.add("INSERT INTO Subject(name) VALUES ('Programming');");
-        result.add("INSERT INTO Subject(name) VALUES ('Music');");
-        result.add("INSERT INTO Subject(name) VALUES ('Politics');");
-        result.add("INSERT INTO Subject(name) VALUES ('Sports');");
+        result.add("INSERT INTO subject(name) VALUES ('Programming');");
+        result.add("INSERT INTO subject(name) VALUES ('Music');");
+        result.add("INSERT INTO subject(name) VALUES ('Politics');");
+        result.add("INSERT INTO subject(name) VALUES ('Sports');");
         return result;
     }
 

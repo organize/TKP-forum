@@ -28,7 +28,7 @@ public class SubjectDAO implements AbstractDataAccessObject {
     @Override
     public ResultSet getAll() throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Subject ORDER BY name ASC");
+                .createStatement().executeQuery("SELECT * FROM Subject ORDER BY name ASC;");
     }
 
     @Override

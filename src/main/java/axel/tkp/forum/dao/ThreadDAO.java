@@ -34,7 +34,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         PreparedStatement statement = database
             .getConnection().prepareStatement(
                     "INSERT INTO Thread (title, subjectId, latestPost) "
-                  + "VALUES (?, ?, datetime('now'));");
+                  + "VALUES (?, ?, now());");
         statement.setString(1, thread.getTitle());
         statement.setInt(2, thread.getSubjectId());
         
@@ -87,7 +87,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
                 .createStatement().executeQuery("SELECT * FROM Message "
                 + "WHERE threadId = '" + threadId + "' ORDER BY uid DESC LIMIT 1;");
         if(rs.next()) {
-            return rs.getString("time");
+            return rs.getTimestamp("time").toString().split(".")[0];
         }
         return "this thread has no posts yet!";
     }
@@ -107,7 +107,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         database.getConnection()
                 .createStatement()
                 .executeUpdate("UPDATE Thread "
-                        + "SET latestPost = datetime('now') "
+                        + "SET latestPost = now() "
                         + "WHERE id = '" + id + "';");
     
     }

@@ -35,7 +35,7 @@ public class MessageDAO implements AbstractDataAccessObject {
         /* Create a prepared statement to prevent injection */
         PreparedStatement statement = database
             .getConnection().prepareStatement(
-                "INSERT INTO Message (content, sender, time, threadId) VALUES (?, ?, datetime('now'), ?);");
+                "INSERT INTO Message (content, sender, time, threadId) VALUES (?, ?, now(), ?);");
         statement.setString(1, message.getContent());
         statement.setString(2, message.getSender());
         statement.setInt(3, message.getThreadId());
@@ -45,16 +45,6 @@ public class MessageDAO implements AbstractDataAccessObject {
         
         /* Execute the update query */
         statement.executeUpdate();
-    }
-    
-    /**
-     * Helps process parameters when inserting data into a table.
-     * 
-     * @param s the string to process.
-     * @return a processed version of the input.
-     */
-    private String process(String s) {
-        return "'" + s + "'";
     }
 
     @Override

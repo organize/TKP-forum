@@ -12,7 +12,7 @@ public class Constants {
     
     public static final Integer PORT = 5000; //4567
     
-    public static final String BASE_PATH = "http://localhost:" + PORT;
+    public static final String BASE_PATH = "https://mighty-tundra-96865.herokuapp.com/";
     
     public static final String DATABASE_NAME = "forum.db";
     

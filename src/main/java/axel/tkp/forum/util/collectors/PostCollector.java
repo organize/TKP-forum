@@ -21,7 +21,7 @@ public class PostCollector implements Collector<ForumMessage> {
             Integer uid = rs.getInt("uid");
             String content = rs.getString("content");
             String sender = rs.getString("sender");
-            String time = rs.getString("time");
+            String time = rs.getTimestamp("time").toString().split(".")[0];
             Integer threadId = rs.getInt("threadId");
             collected.add(new ForumMessage(uid, content, sender, time, threadId));
         }

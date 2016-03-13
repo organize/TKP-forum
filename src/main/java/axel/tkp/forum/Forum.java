@@ -49,13 +49,16 @@ public class Forum {
     
     private static void createPostgreTables(Connection connection) {
         try(Statement s = connection.createStatement()) {
+            s.executeUpdate("DROP TABLE Subejct;");
+            s.executeUpdate("DROP TABLE Message;");
+            s.executeUpdate("DROP TABLE Thread;");
             s.executeUpdate("CREATE TABLE Subject(id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
             s.executeUpdate("CREATE TABLE Thread(id SERIAL PRIMARY KEY, "
-                    + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost DATE, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
+                    + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
                     + "FOREIGN KEY latestPost REFERENCES Message(time));");
             s.executeUpdate("CREATE TABLE Message(uid SERIAL PRIMARY KEY, "
                     + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
-                    + " time DATE, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");
+                    + " time TIMESTAMP, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");
             s.executeUpdate("INSERT INTO Subject(name) VALUES ('Programming');");
             s.executeUpdate("INSERT INTO Subject(name) VALUES ('Music');");
             s.executeUpdate("INSERT INTO Subject(name) VALUES ('Politics');");

@@ -3,6 +3,7 @@ package axel.tkp.forum.dao;
 import axel.tkp.forum.database.Database;
 import axel.tkp.forum.model.ForumThread;
 import axel.tkp.forum.util.collectors.ThreadCollector;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -22,6 +23,19 @@ public class SubjectDAO implements AbstractDataAccessObject {
     
     public SubjectDAO(Database database) {
         this.database = database;
+    }
+    
+    /**
+     * Creates a new subject.
+     * 
+     * @param title the title of the subject.
+     * @throws Exception in case of emergency.
+     */
+    public void create(String title) throws Exception {
+        PreparedStatement statement = database
+            .getConnection().prepareStatement("INSERT INTO subject (name) VALUES (?);");
+        statement.setString(1, title);
+        statement.executeUpdate();
     }
     
     @Override

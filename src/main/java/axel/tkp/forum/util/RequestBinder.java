@@ -87,6 +87,12 @@ public class RequestBinder {
             map.put("subjectId", req.queryParams("subject"));
             return new ModelAndView(map, "postThread");
         }, new ThymeleafTemplateEngine());
+        
+        get("/newSubject", (req, res) -> {
+            Map map = new HashMap<>();
+            map.put("baseUrl", Constants.BASE_PATH);
+            return new ModelAndView(map, "newSubject");
+        }, new ThymeleafTemplateEngine());
     }
     
     /**
@@ -138,6 +144,18 @@ public class RequestBinder {
             
             res.redirect(Constants.BASE_PATH + "/thread?threadId=" + threadId + "&page=1");
             return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
+        }, new ThymeleafTemplateEngine());
+        
+        post("/newSubject", (req, res) -> {
+            String title = req.queryParams("subjectName");
+            Map map = new HashMap();
+            if(title == null || title.equals("") 
+                    || title.replaceAll(" ", "").equals("")) {
+                halt(403, "Title cannot be empty");
+            }
+            new SubjectDAO(database).create(title);
+            res.redirect(Constants.BASE_PATH);
+            return new ModelAndView(map, "forumPost");
         }, new ThymeleafTemplateEngine());
     }
     

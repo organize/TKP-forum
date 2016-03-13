@@ -113,6 +113,9 @@ public class RequestBinder {
         post("/newThread", (req, res) -> {
             int subjectId = parseFromParam(req, "subject");
             String threadTitle = req.queryParams("title");
+            if(threadTitle == null || threadTitle.equals("")) {
+                halt(403, "You must provide a title.");
+            }
             ForumThread thread = new ForumThread(0, threadTitle, 
                 subjectId, "", 0);
             threadDao.create(thread);
@@ -121,6 +124,13 @@ public class RequestBinder {
             
             String sender = req.queryParams("name");
             String content = req.queryParams("content");
+            
+            if(sender == null || sender.equals("")) {
+                halt(403, "You must provide a name.");
+            }
+            if(content == null || content.equals("")) {
+                halt(403, "You must provide a comment.");
+            }
             ForumMessage message 
                     = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);
@@ -141,8 +151,12 @@ public class RequestBinder {
      */
     private static Map getThread(Request req, Database database, ThreadDAO threadDao, int threadId) throws Exception {
         Integer pageId = parseFromParam(req, "page");
+        
+        /* Get all the messages related to this thread - limit, order and offset them */
         List<ForumMessage> posts = new PostCollector()
             .collect(new MessageDAO(database).getForThreadAndLimit(threadId, pageId));
+        
+        /* Get the thread instance of this specific threadId */
         ForumThread ownInstance = new ThreadCollector(threadDao)
                 .collect(threadDao.getForUID(threadId)).get(0);
         Map map = new HashMap<>();
@@ -174,6 +188,12 @@ public class RequestBinder {
         return result;
     }
     
+    /**
+     * Cheap way of handling page counts.
+     * 
+     * @param posts the amount of posts in a thread.
+     * @return the amount of pages required to display them.
+     */
     private static int getNumPages(int posts) {
         if(posts > 10 && posts < 20) {
             return 2;

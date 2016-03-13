@@ -151,6 +151,7 @@ public class RequestBinder {
                 map.get("baseUrl") + "/subject?subjectId=" + ownInstance.getSubjectId());
         map.put("threadId", threadId);
         map.put("posts", posts);
+        map.put("numPages", 4);
         return map;
     }
     

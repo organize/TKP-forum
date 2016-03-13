@@ -28,6 +28,23 @@
 				</td>
 			</tr>
 			</table>
+			<br/>
+			<script th:inline="javascript">
+				/*<![CDATA[*/
+
+					var numPages = [[${numPages}]];
+					var baseUrl = [[${baseUrl}]];
+					var threadId = [[${threadId}]];
+					for(i = 1; i <= numPages; i++) {
+						newlink = document.createElement('a');
+						newlink.innerHTML = i;
+						newlink.setAttribute('title', i);
+						newlink.setAttribute('href', baseUrl + "/thread?threadId=" + curThread + "&page=" + i);
+						document.body.appendChild(newlink);
+					}
+
+				/*]]>*/
+			</script>
 			<table border="1px solid black" style="width: 50%">
 				<tr>
 					<th style="width: 25%">Your name</th>

@@ -65,7 +65,7 @@ public class Forum {
         result.add("CREATE TABLE Subject (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
         result.add("CREATE TABLE Thread(id SERIAL PRIMARY KEY, "
             + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES Subject(id), "
-            + "FOREIGN KEY latestPost REFERENCES Message(time));");
+            + "FOREIGN KEY(latestPost) REFERENCES Message(time));");
         result.add("CREATE TABLE Message(uid SERIAL PRIMARY KEY, "
             + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
             + " time TIMESTAMP, threadId INTEGER, FOREIGN KEY(threadId) REFERENCES Thread(id));");

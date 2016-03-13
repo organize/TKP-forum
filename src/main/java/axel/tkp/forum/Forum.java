@@ -25,14 +25,12 @@ public class Forum {
      * @throws Exception in case of emergency.
      */
     public static void main(String[] argv) throws Exception {
+        
+        /* Bind to the local port */
         port(Integer.valueOf(System.getenv("PORT")));
+        
         /* Main database instance */
         Database database = new Database(Constants.POSTGRES_URL);
-        //if(System.getenv("DATABASE_URL") != null) {
-        //    database = new Database(System.getenv("DATABASE_URL"));
-        //} else {
-        //    database = new Database(Constants.DATABASE_NAME);
-        //}
         
         if(Constants.createTables) {
             createPostgreTables(database);
@@ -62,18 +60,10 @@ public class Forum {
     
     private static List<String> commands() {
         List<String> result = new ArrayList<>();
-        result.add("drop table subject");
-        result.add("CREATE TABLE subject (id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");
-        result.add("INSERT INTO subject(name) VALUES ('Programming');");
-        result.add("INSERT INTO subject(name) VALUES ('Music');");
-        result.add("INSERT INTO subject(name) VALUES ('Politics');");
-        result.add("INSERT INTO subject(name) VALUES ('Sports');");
-        //result.add("CREATE TABLE message(uid SERIAL PRIMARY KEY, "
-         //   + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
-          //  + " time TIMESTAMP, threadId INTEGER);");
-        result.add("CREATE TABLE thread(id SERIAL PRIMARY KEY, "
-            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES subject(id)"
-            + ");");
+        result.add("INSERT INTO subject(name) VALUES ('Xbox');");
+        result.add("INSERT INTO subject(name) VALUES ('Animals');");
+        result.add("INSERT INTO subject(name) VALUES ('Amnesty');");
+        result.add("INSERT INTO subject(name) VALUES ('Cooking');");
         return result;
     }
 

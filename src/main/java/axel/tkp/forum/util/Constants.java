@@ -8,13 +8,9 @@ package axel.tkp.forum.util;
  */
 public class Constants {
     
-    public static boolean createTables = false;
-    
-    public static final Integer PORT = 5000; //4567
+    public static boolean createTables = true;
     
     public static final String BASE_PATH = "https://mighty-tundra-96865.herokuapp.com";
-    
-    public static final String DATABASE_NAME = "forum.db";
     
     public static final String MESSAGE_404 = "Resource not found. <b>Shoo!</b>";
 

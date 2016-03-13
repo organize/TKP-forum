@@ -7,11 +7,16 @@
     </head>
 
     <body>
+	<center>
 		<form method="POST" th:action="|${baseUrl}/newThread?subject=${subjectId}|" id="comment">
-			Thread title: <input type="text" maxlength="30" name="title" style="width: 25%"/><br/>
-			Your username: <input type="text" name="name" maxlength="30" style="width: 25%"></input><br/>
-			Your comment: <textarea name="content" form="comment"></textarea><br/>
-			<input type="submit" value="Post"/>
+			Thread <b>title</b><br/>
+			<input type="text" maxlength="30" name="title" style="width: 35%"/><br/><br/>
+			Your <b>username</b><br/>
+			<input type="text" name="name" maxlength="30" style="width: 25%"></input><br/><br/>
+			Your <b>comment</b><br/>
+			<textarea name="content" rows="4" cols="50" form="comment"></textarea><br/><br/>
+			<input type="submit" style="height:50px; width:100px" value="Post"/>
 		</form>
+	</center>
 	</body>
 </html>

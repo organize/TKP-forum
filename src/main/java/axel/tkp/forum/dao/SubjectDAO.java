@@ -56,6 +56,6 @@ public class SubjectDAO implements AbstractDataAccessObject {
             }
         } catch(ParseException parseException) {}
         Collections.sort(timestamps);
-        return timestamps.isEmpty() ? "none!" : timestamps.get(timestamps.size() - 1).toString().replaceAll(".0", "");
+        return timestamps.isEmpty() ? "none!" : timestamps.get(timestamps.size() - 1).toString();
     }
 }

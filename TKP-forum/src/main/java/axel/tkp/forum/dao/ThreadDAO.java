@@ -43,18 +43,18 @@ public class ThreadDAO implements AbstractDataAccessObject {
     }
     
     @Override
-    public ResultSet getAll() throws SQLException {
+    public ResultSet getAll() throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Thread;");
     }
     
     @Override
-    public ResultSet getForUID(int uid) throws SQLException {
+    public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Thread WHERE id = '" + uid + "';");
     }
     
-    public ResultSet getRecentTen() throws SQLException {
+    public ResultSet getRecentTen() throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Thread ORDER BY latestPost LIMIT 10;");
     }
@@ -66,7 +66,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
      * @return a ResultSet instance containing all the threads related to the subject.
      * @throws SQLException in case of emergency.
      */
-    public ResultSet getForSubject(int subjectId) throws SQLException {
+    public ResultSet getForSubject(int subjectId) throws Exception {
         return database.getConnection()
                 .createStatement()
                 .executeQuery("SELECT * "
@@ -82,7 +82,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
      * @return the date, as a String.
      * @throws SQLException in case of emergency.
      */
-    public String getLatestPostDate(int threadId) throws SQLException {
+    public String getLatestPostDate(int threadId) throws Exception {
         ResultSet rs = database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Message "
                 + "WHERE threadId = '" + threadId + "' ORDER BY uid DESC LIMIT 1;");
@@ -92,7 +92,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         return "this thread has no posts yet!";
     }
     
-    public int getPostCount(int threadId) throws SQLException {
+    public int getPostCount(int threadId) throws Exception {
         int result = 0;
         ResultSet rs = database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Message "
@@ -103,7 +103,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         return result;
     }
     
-    public void updateLatestPost(int id) throws SQLException {
+    public void updateLatestPost(int id) throws Exception {
         database.getConnection()
                 .createStatement()
                 .executeUpdate("UPDATE Thread "
@@ -112,7 +112,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
     
     }
 
-    public int count() throws SQLException {
+    public int count() throws Exception {
         return database.getConnection()
                 .createStatement()
                 .executeQuery("SELECT COUNT(DISTINCT id) AS count FROM Thread;").getInt("count");

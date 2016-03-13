@@ -58,13 +58,13 @@ public class MessageDAO implements AbstractDataAccessObject {
     }
 
     @Override
-    public ResultSet getAll() throws SQLException {
+    public ResultSet getAll() throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Message");
     }
 
     @Override
-    public ResultSet getForUID(int uid) throws SQLException {
+    public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Message WHERE uid = '" + uid + "';");
     }
@@ -77,7 +77,7 @@ public class MessageDAO implements AbstractDataAccessObject {
      *      all the messages in a thread.
      * @throws SQLException in case of emergency.
      */
-    public ResultSet getForThread(int threadId) throws SQLException {
+    public ResultSet getForThread(int threadId) throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Message WHERE threadId = '" + threadId + "';");
     }

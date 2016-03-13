@@ -16,7 +16,7 @@ public interface AbstractDataAccessObject {
      * @return a ResultSet instance containing all the data.
      * @throws SQLException in case of emergency.
      */
-    public ResultSet getAll() throws SQLException;
+    public ResultSet getAll() throws Exception;
     
     /**
      * Get a specified row, defined by the uid parameter.
@@ -25,6 +25,6 @@ public interface AbstractDataAccessObject {
      * @return a ResultSet instance containing the row.
      * @throws SQLException in case of emergency.
      */
-    public ResultSet getForUID(int uid) throws SQLException;
+    public ResultSet getForUID(int uid) throws Exception;
     
 }

@@ -1,5 +1,6 @@
 package axel.tkp.forum.database;
 
+import java.net.URI;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -12,21 +13,26 @@ import java.sql.Statement;
 public class Database {
     
     private Connection connection;
+    private String address;
     
-    public Database(String name) throws Exception {
-        Class.forName("org.sqlite.JDBC");
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + name);
-    }
-    
-    public void update(String sql) throws Exception {
-        connection.setAutoCommit(false);
-        try(Statement s = connection.createStatement()) {
-            s.executeUpdate(sql);
+    public Database(String address) throws Exception {
+        if(address.contains("postgre")) {
+            Class.forName("org.postgresql.Driver");
+        } else {
+            Class.forName("org.sqlite.JDBC");
         }
-        connection.commit();
+        this.connection = DriverManager.getConnection("jdbc:sqlite:" + address);
+        this.address = address;
     }
     
-    public Connection getConnection() {
+    public Connection getConnection() throws Exception {
+        if(address.contains("postgres")) {
+            URI dbUri = new URI(address);
+            String username = dbUri.getUserInfo().split(":")[0];
+            String password = dbUri.getUserInfo().split(":")[1];
+            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+            return DriverManager.getConnection(dbUrl, username, password);
+        }
         return connection;
     }
 

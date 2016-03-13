@@ -26,18 +26,18 @@ public class SubjectDAO implements AbstractDataAccessObject {
     }
     
     @Override
-    public ResultSet getAll() throws SQLException {
+    public ResultSet getAll() throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM Subject ORDER BY name ASC");
     }
 
     @Override
-    public ResultSet getForUID(int uid) throws SQLException {
+    public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection().
                 createStatement().executeQuery("SELECT * FROM Subject WHERE id = '" + uid + "';");
     }
     
-    public int getPostCount(int uid) throws SQLException {
+    public int getPostCount(int uid) throws Exception {
         int result = 0;
         ThreadDAO threadDao = new ThreadDAO(database);
         ResultSet rs = threadDao.getForSubject(uid);
@@ -45,7 +45,7 @@ public class SubjectDAO implements AbstractDataAccessObject {
         return threads.stream().map((thread) -> thread.getPostCount()).reduce(result, Integer::sum);
     }
     
-    public String getLastPostTime(int uid) throws SQLException {
+    public String getLastPostTime(int uid) throws Exception {
         ThreadDAO threadDao = new ThreadDAO(database);
         ResultSet rs = threadDao.getForSubject(uid);
         List<ForumThread> threads = new ThreadCollector(threadDao).collect(rs);

@@ -1,0 +1,1 @@
+web: java -cp TKP-forum\target\classes;TKP-forum\target\dependency\* axel.tkp.forum.Forum

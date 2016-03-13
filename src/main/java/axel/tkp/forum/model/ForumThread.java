@@ -40,6 +40,6 @@ public class ForumThread {
     }
 
     public boolean invalid() {
-        return title == null || title.equals("");
+        return title == null || title.equals("") || title.length() > 30;
     }
 }

@@ -117,7 +117,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
                 .createStatement()
                 .executeQuery("SELECT count(id) AS post_count FROM thread;");
         int result = 0;
-        if(rs.first()) {
+        if(rs.next()) {
             result = rs.getInt("post_count");
         }
         return result;

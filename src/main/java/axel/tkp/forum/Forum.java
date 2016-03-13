@@ -23,6 +23,7 @@ public class Forum {
      * @throws Exception in case of emergency.
      */
     public static void main(String[] argv) throws Exception {
+        port(Integer.valueOf(System.getenv("PORT")));
         /* Main database instance */
         Database database = new Database(Constants.POSTGRES_URL);
         //if(System.getenv("DATABASE_URL") != null) {

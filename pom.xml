@@ -54,7 +54,7 @@
 				<configuration>
 				  <appName>mighty-tundra-96865</appName>
 				  <processTypes>
-					<web>java $JAVA_OPTS -cp TKP-forum/target/classes:TKP-forum/target/dependency/* axel.tkp.forum.Forum</web>
+					<web>java $JAVA_OPTS -cp target/classes:target/dependency/* axel.tkp.forum.Forum</web>
 				  </processTypes>
 				</configuration>
 			</plugin>

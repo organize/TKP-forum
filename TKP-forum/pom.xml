@@ -48,6 +48,17 @@
                 <version>3.3</version>
             </plugin>
 			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+				  <appName>mighty-tundra-96865</appName>
+				  <processTypes>
+					<web>java $JAVA_OPTS -cp target/classes:target/dependency/* axel.tkp.forum.Forum</web>
+				  </processTypes>
+				</configuration>
+			</plugin>
+			<plugin>
 			  <groupId>org.apache.maven.plugins</groupId>
 			  <artifactId>maven-dependency-plugin</artifactId>
 			  <version>2.4</version>

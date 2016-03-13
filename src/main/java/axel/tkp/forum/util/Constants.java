@@ -8,7 +8,7 @@ package axel.tkp.forum.util;
  */
 public class Constants {
     
-    public static boolean createTables = true;
+    public static boolean createTables = false;
     
     public static final String BASE_PATH = "https://mighty-tundra-96865.herokuapp.com";
     

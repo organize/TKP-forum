@@ -95,7 +95,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
     public int getPostCount(int threadId) throws Exception {
         int result = 0;
         ResultSet rs = database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Message "
+                .createStatement().executeQuery("SELECT * FROM message "
                 + "WHERE threadId = '" + threadId + "';");
         while(rs.next()) {
             result++;
@@ -106,7 +106,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
     public void updateLatestPost(int id) throws Exception {
         database.getConnection()
                 .createStatement()
-                .executeUpdate("UPDATE Thread "
+                .executeUpdate("UPDATE thread "
                         + "SET latestPost = now() "
                         + "WHERE id = '" + id + "';");
     
@@ -115,7 +115,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
     public int count() throws Exception {
         return database.getConnection()
                 .createStatement()
-                .executeQuery("SELECT COUNT(DISTINCT id) AS count FROM Thread;").getInt("count");
+                .executeQuery("SELECT COUNT(DISTINCT id) AS count FROM thread;").getInt("count");
     }
 
 }

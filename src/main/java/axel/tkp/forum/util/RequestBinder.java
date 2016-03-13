@@ -113,24 +113,25 @@ public class RequestBinder {
         post("/newThread", (req, res) -> {
             int subjectId = parseFromParam(req, "subject");
             String threadTitle = req.queryParams("title");
-            if(threadTitle == null || threadTitle.equals("")) {
-                halt(403, "You must provide a title.");
-            }
-            ForumThread thread = new ForumThread(0, threadTitle, 
-                subjectId, "", 0);
-            threadDao.create(thread);
-            
-            int threadId = threadDao.count();
-            
             String sender = req.queryParams("name");
             String content = req.queryParams("content");
             
+            if(threadTitle == null || threadTitle.equals("")) {
+                halt(403, "You must provide a title.");
+            }
             if(sender == null || sender.equals("")) {
                 halt(403, "You must provide a name.");
             }
             if(content == null || content.equals("")) {
                 halt(403, "You must provide a comment.");
             }
+            
+            ForumThread thread = new ForumThread(0, threadTitle, 
+                subjectId, "", 0);
+            threadDao.create(thread);
+            
+            int threadId = threadDao.count();
+            
             ForumMessage message 
                     = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);

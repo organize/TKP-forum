@@ -35,7 +35,7 @@ public class MessageDAO implements AbstractDataAccessObject {
         /* Create a prepared statement to prevent injection */
         PreparedStatement statement = database
             .getConnection().prepareStatement(
-                "INSERT INTO Message (content, sender, time, threadId) VALUES (?, ?, now(), ?);");
+                "INSERT INTO message (content, sender, time, threadId) VALUES (?, ?, now(), ?);");
         statement.setString(1, message.getContent());
         statement.setString(2, message.getSender());
         statement.setInt(3, message.getThreadId());
@@ -50,13 +50,13 @@ public class MessageDAO implements AbstractDataAccessObject {
     @Override
     public ResultSet getAll() throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Message");
+                .createStatement().executeQuery("SELECT * FROM message");
     }
 
     @Override
     public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Message WHERE uid = '" + uid + "';");
+                .createStatement().executeQuery("SELECT * FROM message WHERE uid = '" + uid + "';");
     }
     
     /**
@@ -69,7 +69,7 @@ public class MessageDAO implements AbstractDataAccessObject {
      */
     public ResultSet getForThread(int threadId) throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Message WHERE threadId = '" + threadId + "';");
+                .createStatement().executeQuery("SELECT * FROM message WHERE threadId = '" + threadId + "';");
     }
 
 }

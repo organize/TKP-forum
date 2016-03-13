@@ -33,7 +33,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         /* Create a prepared statement to prevent injection */
         PreparedStatement statement = database
             .getConnection().prepareStatement(
-                    "INSERT INTO Thread (title, subjectId, latestPost) "
+                    "INSERT INTO thread (title, subjectId, latestPost) "
                   + "VALUES (?, ?, now());");
         statement.setString(1, thread.getTitle());
         statement.setInt(2, thread.getSubjectId());
@@ -45,18 +45,18 @@ public class ThreadDAO implements AbstractDataAccessObject {
     @Override
     public ResultSet getAll() throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Thread;");
+                .createStatement().executeQuery("SELECT * FROM thread;");
     }
     
     @Override
     public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Thread WHERE id = '" + uid + "';");
+                .createStatement().executeQuery("SELECT * FROM thread WHERE id = '" + uid + "';");
     }
     
     public ResultSet getRecentTen() throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Thread ORDER BY latestPost LIMIT 10;");
+                .createStatement().executeQuery("SELECT * FROM thread ORDER BY latestPost LIMIT 10;");
     }
     
     /**
@@ -70,7 +70,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         return database.getConnection()
                 .createStatement()
                 .executeQuery("SELECT * "
-                        + "FROM Thread "
+                        + "FROM thread "
                         + "WHERE subjectId = '" + subjectId + "' "
                         + "ORDER BY latestPost DESC LIMIT 10;");
     }
@@ -84,7 +84,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
      */
     public String getLatestPostDate(int threadId) throws Exception {
         ResultSet rs = database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Message "
+                .createStatement().executeQuery("SELECT * FROM message "
                 + "WHERE threadId = '" + threadId + "' ORDER BY uid DESC LIMIT 1;");
         if(rs.next()) {
             return rs.getTimestamp("time").toString().split(".")[0];

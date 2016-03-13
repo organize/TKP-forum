@@ -8,7 +8,7 @@ package axel.tkp.forum.util;
  */
 public class Constants {
     
-    public static boolean createTables = false;
+    public static boolean createTables = true;
     
     public static final Integer PORT = 5000; //4567
     

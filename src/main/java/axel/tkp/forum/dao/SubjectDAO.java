@@ -28,13 +28,13 @@ public class SubjectDAO implements AbstractDataAccessObject {
     @Override
     public ResultSet getAll() throws Exception {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Subject ORDER BY name ASC;");
+                .createStatement().executeQuery("SELECT * FROM subject ORDER BY name ASC;");
     }
 
     @Override
     public ResultSet getForUID(int uid) throws Exception {
         return database.getConnection().
-                createStatement().executeQuery("SELECT * FROM Subject WHERE id = '" + uid + "';");
+                createStatement().executeQuery("SELECT * FROM subject WHERE id = '" + uid + "';");
     }
     
     public int getPostCount(int uid) throws Exception {

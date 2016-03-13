@@ -21,11 +21,14 @@ public class Database {
     }
     
     public Connection getConnection() throws Exception {
+        if(connection != null) {
+            return connection;
+        }
         URI dbUri = new URI(address);
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-        return DriverManager.getConnection(dbUrl, username, password);
+        return connection = DriverManager.getConnection(dbUrl, username, password);
     }
 
 }

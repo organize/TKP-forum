@@ -23,21 +23,17 @@ public class SubjectCollector implements Collector<ForumSubject> {
 
     @Override
     public ArrayList<ForumSubject> collect(ResultSet rs) throws Exception {
-        try {
-            List<ForumSubject> collected = new ArrayList<>();
-            while(rs.next()) {
-                Integer uid = rs.getInt("id");
-                String name = rs.getString("name");
-                String lastPostTime = dao.getLastPostTime(uid);
-                Integer collectivePostCount = dao.getPostCount(uid);
-                collected.add(new ForumSubject(uid, name,
-                        lastPostTime, collectivePostCount));
-            }
-            return (ArrayList<ForumSubject>) collected;
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
+        List<ForumSubject> collected = new ArrayList<>();
+        while(rs.next()) {
+            Integer uid = rs.getInt("id");
+            String name = rs.getString("name");
+            String lastPostTime = dao.getLastPostTime(uid);
+            Integer collectivePostCount = dao.getPostCount(uid);
+            collected.add(new ForumSubject(uid, name,
+                    lastPostTime, collectivePostCount));
         }
+        rs.close();
+        return (ArrayList<ForumSubject>) collected;
     }
 
 }

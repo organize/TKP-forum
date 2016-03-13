@@ -25,6 +25,7 @@ public class PostCollector implements Collector<ForumMessage> {
             Integer threadId = rs.getInt("threadId");
             collected.add(new ForumMessage(uid, content, sender, time, threadId));
         }
+        rs.close();
         return (ArrayList<ForumMessage>) collected;
     }
 

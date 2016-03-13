@@ -33,6 +33,7 @@ public class ThreadCollector implements Collector<ForumThread> {
             collected.add(new ForumThread(uid, title, 
                     subjectId, lastPost, postCount));
         }
+        rs.close();
         return (ArrayList<ForumThread>) collected;
     }
 

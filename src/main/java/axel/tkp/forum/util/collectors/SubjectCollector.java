@@ -33,6 +33,7 @@ public class SubjectCollector implements Collector<ForumSubject> {
                 collected.add(new ForumSubject(uid, name,
                         lastPostTime, collectivePostCount));
             }
+            System.out.println("collected " + collected.size() + " subs");
             return (ArrayList<ForumSubject>) collected;
         } catch(Exception e) {
             e.printStackTrace();

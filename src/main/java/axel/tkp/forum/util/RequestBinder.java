@@ -165,7 +165,7 @@ public class RequestBinder {
      * @return the value specified by paramName, or -1 if nonexisting.
      */
     private static Integer parseFromParam(Request req, String paramName) {
-        int result = -1;
+        int result = 1;
         try {
             result = Integer.parseInt(req.queryParams(paramName));
         } catch(Exception e) {

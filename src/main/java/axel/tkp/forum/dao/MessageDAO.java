@@ -74,7 +74,7 @@ public class MessageDAO implements AbstractDataAccessObject {
     public ResultSet getForThreadAndLimit(int threadId, int pageId) throws Exception {
         return database.getConnection()
                 .createStatement().executeQuery("SELECT * FROM message "
-                        + "WHERE threadId = '" + threadId + "' LIMIT 10 OFFSET " + ((pageId * 10) - 1) + ";");
+                        + "WHERE threadId = '" + threadId + "' LIMIT 10 OFFSET " + pageId * 10 + ";");
     }
 
 }

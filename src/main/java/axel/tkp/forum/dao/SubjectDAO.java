@@ -50,7 +50,7 @@ public class SubjectDAO implements AbstractDataAccessObject {
         List<ForumThread> threads = new ThreadCollector(threadDao).collect(rs);
         List<Timestamp> timestamps = new ArrayList<>();
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             for(ForumThread thread : threads) {
                 timestamps.add(new Timestamp(dateFormat.parse(thread.getLastPostDate()).getTime()));
             }

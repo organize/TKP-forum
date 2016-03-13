@@ -152,7 +152,7 @@ public class RequestBinder {
                 map.get("baseUrl") + "/subject?subjectId=" + ownInstance.getSubjectId());
         map.put("threadId", threadId);
         map.put("posts", posts);
-        map.put("numPages", ownInstance.getPostCount() / 10);
+        map.put("numPages", getNumPages(ownInstance.getPostCount()));
         return map;
     }
     
@@ -172,5 +172,21 @@ public class RequestBinder {
             halt(404, Constants.MESSAGE_404);
         }
         return result;
+    }
+    
+    private static int getNumPages(int posts) {
+        if(posts > 10 && posts < 20) {
+            return 2;
+        }
+        if(posts > 20 && posts < 30) {
+            return 3;
+        }
+        if(posts > 30 && posts < 40) {
+            return 4;
+        }
+        if(posts > 40 && posts < 50) {
+            return 5;
+        }
+        return 1;
     }
 }

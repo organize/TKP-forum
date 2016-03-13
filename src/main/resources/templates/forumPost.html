@@ -53,7 +53,7 @@
 				</tr>
 				<br/>
 				<br/>
-				<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|" id="comment">
+				<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}&amp;page=1|" id="comment">
 					<tr>
 						<td><input type="text" name="name" style="width: 70%"></input></td>
 						<td><textarea name="content" form="comment"></textarea></td>

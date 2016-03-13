@@ -113,9 +113,14 @@ public class ThreadDAO implements AbstractDataAccessObject {
     }
 
     public int count() throws Exception {
-        return database.getConnection()
+        ResultSet rs = database.getConnection()
                 .createStatement()
-                .executeQuery("SELECT COUNT(DISTINCT id) AS count FROM thread;").getInt("count");
+                .executeQuery("SELECT count(id) AS post_count FROM thread;");
+        int result = 0;
+        if(rs.next()) {
+            result = rs.getInt("post_count");
+        }
+        return result;
     }
 
 }

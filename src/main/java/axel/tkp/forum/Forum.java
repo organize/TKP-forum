@@ -35,7 +35,7 @@ public class Forum {
         //}
         
         if(Constants.createTables) {
-            createPostgreTables(database.getConnection());
+            createPostgreTables(database);
         }
         
         /* Relative location to our misc. files */

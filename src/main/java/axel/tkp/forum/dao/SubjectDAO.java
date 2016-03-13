@@ -4,7 +4,6 @@ import axel.tkp.forum.database.Database;
 import axel.tkp.forum.model.ForumThread;
 import axel.tkp.forum.util.collectors.ThreadCollector;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

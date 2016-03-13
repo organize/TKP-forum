@@ -111,7 +111,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         database.getConnection()
                 .createStatement()
                 .executeUpdate("UPDATE thread "
-                        + "SET latestPost = now() "
+                        + "SET latestPost = now()::timestamp(0) "
                         + "WHERE id = '" + id + "';");
     
     }

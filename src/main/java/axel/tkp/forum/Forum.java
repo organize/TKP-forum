@@ -28,7 +28,7 @@ public class Forum {
         
         Database database;
         if(System.getenv("DATABASE_URL") != null) {
-            database = new Database(Constants.POSTGRE_DB);
+            database = new Database(System.getenv("DATABASE_URL"));
         } else {
             database = new Database(Constants.DATABASE_NAME);
         }

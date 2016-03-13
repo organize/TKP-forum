@@ -88,7 +88,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
                 + "WHERE threadId = '" + threadId + "' ORDER BY uid DESC LIMIT 1;");
         if(rs.next()) {
             String time = rs.getTimestamp("time").toString();
-            if(time.split(".")[0] != null) {
+            if(time.split(".").length > 1) {
                 return time.split(".")[0];
             }
             return time;

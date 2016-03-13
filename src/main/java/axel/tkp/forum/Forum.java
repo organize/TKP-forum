@@ -68,9 +68,9 @@ public class Forum {
         result.add("INSERT INTO subject(name) VALUES ('Music');");
         result.add("INSERT INTO subject(name) VALUES ('Politics');");
         result.add("INSERT INTO subject(name) VALUES ('Sports');");
-        result.add("CREATE TABLE message(uid SERIAL PRIMARY KEY, "
-            + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
-            + " time TIMESTAMP, threadId INTEGER);");
+        //result.add("CREATE TABLE message(uid SERIAL PRIMARY KEY, "
+         //   + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
+          //  + " time TIMESTAMP, threadId INTEGER);");
         result.add("CREATE TABLE thread(id SERIAL PRIMARY KEY, "
             + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES subject(id)"
             + ");");

@@ -21,8 +21,8 @@ public class Database {
         } else {
             Class.forName("org.sqlite.JDBC");
         }
-        this.connection = getConnection();
         this.address = address;
+        this.connection = getConnection();
     }
     
     public Connection getConnection() throws Exception {

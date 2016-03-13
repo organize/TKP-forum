@@ -125,7 +125,7 @@ public class RequestBinder {
                     = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);
             
-            res.redirect(Constants.BASE_PATH + "/thread?threadId=" + threadId);
+            res.redirect(Constants.BASE_PATH + "/thread?threadId=" + threadId + "&page=1");
             return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
     }

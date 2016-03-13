@@ -42,6 +42,8 @@ public class ForumMessage {
     
     public boolean invalid() {
         return content == null || content.equals("") 
-                || sender == null || sender.equals("");
+                || sender == null || sender.equals("")
+                || sender.replaceAll(" ", "").equals("")
+                || content.replaceAll(" ", "").equals("");
     }
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TKP-Forum</title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body><center>
+		<h2 th:text="${subtitle}"></h2>
+			<table border="1px solid black" style="width:100%">
+			<tr>
+				<th>Thread name</th>
+				<th>Message count</th>
+				<th>Latest message</th>
+			</tr>
+			<tr th:each="thread: ${threads}">
+				<td>
+					<a th:href="|${baseUrl}/thread?threadId=${thread.threadId}|">
+						<i th:text="${thread.title}"/>
+					</a>
+				</td>
+				<td>1</td>
+				<td><text th:text="${thread.lastPostDate}"/></td>
+			</tr>
+		</table>
+    </center></body>
+</html>

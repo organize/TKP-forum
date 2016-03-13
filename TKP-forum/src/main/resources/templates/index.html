@@ -1,0 +1,30 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TKP-Forum</title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body><center>
+		<h2 th:text="${subtitle}"></h2>
+			<table border="1px solid black" style="width:100%">
+			<tr>
+				<th>Subject</th>
+				<th>Total messages</th>
+				<th>Latest message</th>
+			</tr>
+			<tr th:each="subject: ${subjects}">
+				<!-- <td th:href="@{/forum/subject=(${subject.id})}">th:text="${subject.name}"></td>
+				-->
+				<td>
+					<a th:href="|${baseUrl}/subject?subjectId=${subject.uid}|">
+						<i th:text="${subject.name}"/>
+					</a>
+				</td>
+				<td>1</td>
+				<td>01-01-2001</td>
+			</tr>
+		</table>
+    </center></body>
+</html>

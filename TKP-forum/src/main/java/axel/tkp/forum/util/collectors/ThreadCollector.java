@@ -1,0 +1,33 @@
+package axel.tkp.forum.util.collectors;
+
+import axel.tkp.forum.dao.ThreadDAO;
+import axel.tkp.forum.model.ForumSubject;
+import axel.tkp.forum.model.ForumThread;
+import axel.tkp.forum.util.Collector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ThreadCollector implements Collector<ForumThread> {
+    
+    private ThreadDAO dao;
+    
+    public ThreadCollector(ThreadDAO dao) {
+        this.dao = dao;
+    }
+
+    @Override
+    public ArrayList<ForumThread> collect(ResultSet rs) throws SQLException {
+        List<ForumThread> collected = new ArrayList<>();
+        while(rs.next()) {
+            Integer uid = rs.getInt("id");
+            Integer subjectId = rs.getInt("subjectId");
+            String title = rs.getString("title");
+            String lastPost = dao.getLatestPostDate(uid);
+            collected.add(new ForumThread(uid, title, subjectId, lastPost));
+        }
+        return (ArrayList<ForumThread>) collected;
+    }
+
+}

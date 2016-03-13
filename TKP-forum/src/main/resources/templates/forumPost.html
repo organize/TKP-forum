@@ -1,0 +1,37 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TKP-Forum</title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body><center>
+		<h2 th:text="${subtitle}"></h2>
+			<table border="1px solid black" style="width: 50%; table-layout: fixed;">
+			<tr>
+				<th width="30%">Sender</th>
+				<th>Message</th>
+			</tr>
+			<tr th:each="post: ${posts}">
+				<td>
+					<i th:text="${post.sender}"/> @ <i th:text="${post.time}"/>
+				</td>
+				<td style="word-wrap: break-word">
+					<text th:text="${post.content}"/>
+				</td>
+			</tr>
+			<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|">
+				<tr>
+					<td><input type="text" name="name"></input></td>
+					<td><input type="text" name="content"></input></td>
+				</tr>
+				<input type="submit" value="Send"/>
+			</form>
+		</table>
+		<!--<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|">
+			<input type="text" name="name"></input>
+			<input type="text" name="content"></input>
+			<input type="submit" value="Send"/>-->
+    </center></body>
+</html>

@@ -5,7 +5,6 @@ import axel.tkp.forum.model.ForumMessage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Represents a DAO for the forum messages.
@@ -35,7 +34,7 @@ public class MessageDAO implements AbstractDataAccessObject {
         /* Create a prepared statement to prevent injection */
         PreparedStatement statement = database
             .getConnection().prepareStatement(
-                "INSERT INTO message (content, sender, time, threadId) VALUES (?, ?, now()::timestamp(0), ?);");
+                "INSERT INTO message (content, sender, time, threadId) VALUES (?, ?, now()::timestamptz(0), ?);");
         statement.setString(1, message.getContent());
         statement.setString(2, message.getSender());
         statement.setInt(3, message.getThreadId());

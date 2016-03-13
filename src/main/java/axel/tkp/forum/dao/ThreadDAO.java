@@ -34,7 +34,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         PreparedStatement statement = database
             .getConnection().prepareStatement(
                     "INSERT INTO thread (title, subjectId, latestPost) "
-                  + "VALUES (?, ?, now());");
+                  + "VALUES (?, ?, now()::timestamptz(0));");
         statement.setString(1, thread.getTitle());
         statement.setInt(2, thread.getSubjectId());
         
@@ -111,7 +111,7 @@ public class ThreadDAO implements AbstractDataAccessObject {
         database.getConnection()
                 .createStatement()
                 .executeUpdate("UPDATE thread "
-                        + "SET latestPost = now()::timestamp(0) "
+                        + "SET latestPost = now()::timestamptz(0) "
                         + "WHERE id = '" + id + "';");
     
     }

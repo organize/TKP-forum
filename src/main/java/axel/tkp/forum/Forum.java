@@ -26,12 +26,12 @@ public class Forum {
         /* Main database instance */
         port(5000);
         
-        Database database = new Database(System.getenv("DATABASE_URL"));
-        if(System.getenv("DATABASE_URL") != null) {
-            database = new Database(System.getenv("DATABASE_URL"));
-        } else {
-            database = new Database(Constants.DATABASE_NAME);
-        }
+        Database database = new Database(Constants.POSTGRES_URL);
+        //if(System.getenv("DATABASE_URL") != null) {
+        //    database = new Database(System.getenv("DATABASE_URL"));
+        //} else {
+        //    database = new Database(Constants.DATABASE_NAME);
+        //}
         
         if(Constants.createTables) {
             createPostgreTables(database.getConnection());

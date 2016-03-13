@@ -21,7 +21,7 @@ public class Database {
         } else {
             Class.forName("org.sqlite.JDBC");
         }
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + address);
+        this.connection = getConnection();
         this.address = address;
     }
     

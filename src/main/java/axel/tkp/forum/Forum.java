@@ -24,8 +24,6 @@ public class Forum {
      */
     public static void main(String[] argv) throws Exception {
         /* Main database instance */
-        port(5000);
-        
         Database database = new Database(Constants.POSTGRES_URL);
         //if(System.getenv("DATABASE_URL") != null) {
         //    database = new Database(System.getenv("DATABASE_URL"));
@@ -49,7 +47,7 @@ public class Forum {
     
     private static void createPostgreTables(Connection connection) {
         try(Statement s = connection.createStatement()) {
-            s.executeUpdate("DROP TABLE Subejct;");
+            s.executeUpdate("DROP TABLE Subject;");
             s.executeUpdate("DROP TABLE Message;");
             s.executeUpdate("DROP TABLE Thread;");
             s.executeUpdate("CREATE TABLE Subject(id SERIAL PRIMARY KEY, name VARCHAR(30) NOT NULL);");

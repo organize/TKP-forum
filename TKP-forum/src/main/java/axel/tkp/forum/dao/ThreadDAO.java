@@ -1,6 +1,8 @@
 package axel.tkp.forum.dao;
 
 import axel.tkp.forum.database.Database;
+import axel.tkp.forum.model.ForumThread;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,6 +19,29 @@ public class ThreadDAO implements AbstractDataAccessObject {
         this.database = database;
     }
     
+    /**
+     * Creates a new thread representation in the database table 'Thread'.
+     * 
+     * @param thread the thread to create.
+     * @throws Exception in case of emergency.
+     */
+    public void create(ForumThread thread) throws Exception {
+        /* Affirm that the thread instance is valid */
+        if(thread.invalid()) {
+            throw new Exception();
+        }
+        /* Create a prepared statement to prevent injection */
+        PreparedStatement statement = database
+            .getConnection().prepareStatement(
+                    "INSERT INTO Thread (title, subjectId, latestPost) "
+                  + "VALUES (?, ?, datetime('now'));");
+        statement.setString(1, thread.getTitle());
+        statement.setInt(2, thread.getSubjectId());
+        
+        /* Execute the prepared update query */
+        statement.executeUpdate();
+    }
+    
     @Override
     public ResultSet getAll() throws SQLException {
         return database.getConnection()
@@ -29,17 +54,25 @@ public class ThreadDAO implements AbstractDataAccessObject {
                 .createStatement().executeQuery("SELECT * FROM Thread WHERE id = '" + uid + "';");
     }
     
+    public ResultSet getRecentTen() throws SQLException {
+        return database.getConnection()
+                .createStatement().executeQuery("SELECT * FROM Thread ORDER BY latestPost LIMIT 10;");
+    }
+    
     /**
      * Gets all the threads related to a subject.
      * 
      * @param subjectId the subject of which's related threads we want.
      * @return a ResultSet instance containing all the threads related to the subject.
-     * @throws Exception in case of emergency.
+     * @throws SQLException in case of emergency.
      */
-    public ResultSet getForSubject(int subjectId) throws Exception {
+    public ResultSet getForSubject(int subjectId) throws SQLException {
         return database.getConnection()
                 .createStatement()
-                .executeQuery("SELECT * FROM Thread WHERE subjectId = '" + subjectId + "';");
+                .executeQuery("SELECT * "
+                        + "FROM Thread "
+                        + "WHERE subjectId = '" + subjectId + "' "
+                        + "ORDER BY latestPost DESC LIMIT 10;");
     }
     
     /**
@@ -57,6 +90,32 @@ public class ThreadDAO implements AbstractDataAccessObject {
             return rs.getString("time");
         }
         return "this thread has no posts yet!";
+    }
+    
+    public int getPostCount(int threadId) throws SQLException {
+        int result = 0;
+        ResultSet rs = database.getConnection()
+                .createStatement().executeQuery("SELECT * FROM Message "
+                + "WHERE threadId = '" + threadId + "';");
+        while(rs.next()) {
+            result++;
+        }
+        return result;
+    }
+    
+    public void updateLatestPost(int id) throws SQLException {
+        database.getConnection()
+                .createStatement()
+                .executeUpdate("UPDATE Thread "
+                        + "SET latestPost = datetime('now') "
+                        + "WHERE id = '" + id + "';");
+    
+    }
+
+    public int count() throws SQLException {
+        return database.getConnection()
+                .createStatement()
+                .executeQuery("SELECT COUNT(DISTINCT id) AS count FROM Thread;").getInt("count");
     }
 
 }

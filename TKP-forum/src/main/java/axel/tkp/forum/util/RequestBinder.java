@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import static spark.Spark.*;
 
@@ -27,7 +28,7 @@ public class RequestBinder {
         try {
             bindGET(database);
         } catch(Exception e) {
-            System.out.println("error -> cannot bind GETs");
+            halt(404, Constants.MESSAGE_404);
         }
         bindPOST(database);
     }
@@ -39,35 +40,52 @@ public class RequestBinder {
      * @throws Exception in case of emergency.
      */
     private static void bindGET(Database database) throws Exception {
-        List<ForumSubject> subjects = new SubjectCollector()
-            .collect(new SubjectDAO(database).getAll());
+        /* Initialize the DAOs just once */
+        SubjectDAO subjectDao = new SubjectDAO(database);
+        ThreadDAO threadDao = new ThreadDAO(database);
         
         /* The main view */
         get("/", (req, res) -> {
+            List<ForumSubject> subjects = new SubjectCollector(subjectDao)
+                    .collect(subjectDao.getAll());
+
             Map map = new HashMap<>();
             map.put("subtitle", "TKP-Forum");
-            map.put("baseUrl", "http://localhost:4567");
+            map.put("baseUrl", Constants.BASE_PATH);
             map.put("subjects", subjects);
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
-        
+
         /* When a subject has been selected */
         get("/subject", (req, res) -> {
-            int subjectid = Integer.parseInt(req.queryParams("subjectId"));
-            ThreadDAO threadDao = new ThreadDAO(database);
+            int subjectid = parseFromParam(req, "subjectId");
             Collector<ForumThread> collector = new ThreadCollector(threadDao);
             List<ForumThread> threads = collector.collect(threadDao.getForSubject(subjectid));
             Map map = new HashMap<>();
             map.put("subtitle", "TKP-Forum");
-            map.put("baseUrl", "http://localhost:4567");
+            map.put("baseUrl", Constants.BASE_PATH);
+            map.put("returnUrl", map.get("baseUrl") + "/");
+            map.put("subjectName",
+                    new SubjectCollector(subjectDao)
+                    .collect(subjectDao.getForUID(subjectid))
+                    .get(0).getName());
             map.put("threads", threads);
+            map.put("subjectId", subjectid);
             return new ModelAndView(map, "threads");
         }, new ThymeleafTemplateEngine());
-        
+
         /* When a thread has been selected */
         get("/thread", (req, res) -> {
             int threadId = Integer.parseInt(req.queryParams("threadId"));
-            return new ModelAndView(getThread(database, threadId), "forumPost");
+            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
+        }, new ThymeleafTemplateEngine());
+
+        /* When posting a new thread */
+        get("/newThread", (req, res) -> {
+            Map map = new HashMap<>();
+            map.put("baseUrl", Constants.BASE_PATH);
+            map.put("subjectId", req.queryParams("subject"));
+            return new ModelAndView(map, "postThread");
         }, new ThymeleafTemplateEngine());
     }
     
@@ -77,16 +95,38 @@ public class RequestBinder {
      * @param database the database instance.
      */
     private static void bindPOST(Database database) {
+        ThreadDAO threadDao = new ThreadDAO(database);
+        MessageDAO messageDao = new MessageDAO(database);
+        
+        /* A new post has been added to a thread */
         post("/thread", (req, res) -> {
-            int threadId = Integer.parseInt(req.queryParams("threadId"));
-            MessageDAO messageDao = new MessageDAO(database);
+            int threadId = parseFromParam(req, "threadId");
+            String sender = req.queryParams("name");
+            String content = req.queryParams("content");
+            ForumMessage message 
+                    = new ForumMessage(0, content, sender, "", threadId);
+            messageDao.create(message);
+            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
+        }, new ThymeleafTemplateEngine());
+        
+        /* A new thread has been posted */
+        post("/newThread", (req, res) -> {
+            int subjectId = parseFromParam(req, "subject");
+            String threadTitle = req.queryParams("title");
+            ForumThread thread = new ForumThread(0, threadTitle, 
+                subjectId, "", 0);
+            threadDao.create(thread);
+            
+            int threadId = threadDao.count();
             
             String sender = req.queryParams("name");
             String content = req.queryParams("content");
             ForumMessage message 
                     = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);
-            return new ModelAndView(getThread(database, threadId), "forumPost");
+            
+            res.redirect("http://localhost:4567/thread?threadId=" + threadId);
+            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
     }
     
@@ -99,15 +139,36 @@ public class RequestBinder {
      * @return a map that contains all the necessary data for the engine.
      * @throws Exception in case of emergency.
      */
-    private static Map getThread(Database database, int threadId) throws Exception {
+    private static Map getThread(Database database, ThreadDAO threadDao, int threadId) throws Exception {
         List<ForumMessage> posts = new PostCollector()
             .collect(new MessageDAO(database).getForThread(threadId));
+        ForumThread ownInstance = new ThreadCollector(threadDao)
+                .collect(threadDao.getForUID(threadId)).get(0);
         Map map = new HashMap<>();
-        map.put("subtitle", "TKP-Forum");
-        map.put("baseUrl", "http://localhost:4567");
+        map.put("subtitle", ownInstance.getTitle());
+        map.put("baseUrl", Constants.BASE_PATH);
+        map.put("returnUrl", 
+                map.get("baseUrl") + "/subject?subjectId=" + ownInstance.getSubjectId());
         map.put("threadId", threadId);
         map.put("posts", posts);
         return map;
     }
-
+    
+    /**
+     * Helper method to catch exceptions without 200 lines of copypaste.
+     * Eliminates error-poking and possible injections.
+     * 
+     * @param req the request instance.
+     * @param paramName the parameter name of which's value is required.
+     * @return the value specified by paramName, or -1 if nonexisting.
+     */
+    private static Integer parseFromParam(Request req, String paramName) {
+        int result = -1;
+        try {
+            result = Integer.parseInt(req.queryParams(paramName));
+        } catch(Exception e) {
+            halt(404, Constants.MESSAGE_404);
+        }
+        return result;
+    }
 }

@@ -8,22 +8,20 @@
 
     <body><center>
 		<h2 th:text="${subtitle}"></h2>
-			<table border="1px solid black" style="width:100%">
+			<table border="1px solid black" style="width:70%">
 			<tr>
 				<th>Subject</th>
 				<th>Total messages</th>
 				<th>Latest message</th>
 			</tr>
 			<tr th:each="subject: ${subjects}">
-				<!-- <td th:href="@{/forum/subject=(${subject.id})}">th:text="${subject.name}"></td>
-				-->
 				<td>
 					<a th:href="|${baseUrl}/subject?subjectId=${subject.uid}|">
 						<i th:text="${subject.name}"/>
 					</a>
 				</td>
-				<td>1</td>
-				<td>01-01-2001</td>
+				<td><text th:text="${subject.collectivePostCount}"/></td>
+				<td><text th:text="${subject.lastPostDate}"/></td>
 			</tr>
 		</table>
     </center></body>

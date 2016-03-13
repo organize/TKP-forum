@@ -1,18 +1,27 @@
 package axel.tkp.forum;
 
 import axel.tkp.forum.database.Database;
+import axel.tkp.forum.util.Constants;
 import axel.tkp.forum.util.RequestBinder;
 import static spark.Spark.*;
 
 /**
- * Program entry class.
+ * The main TKP-Forum class.
  * 
  * @author Axel Wallin
  */
 public class Forum {
     
+    /**
+     * Program entry point.
+     * 
+     * @param argv no arguments supported currently.
+     * @throws Exception in case of emergency.
+     */
     public static void main(String[] argv) throws Exception {
-        Database database = new Database("forum.db");
+        /* Main database instance */
+        
+        Database database = new Database(Constants.DATABASE_NAME);
         /* Relative location to our misc. files */
         staticFileLocation("public");
         

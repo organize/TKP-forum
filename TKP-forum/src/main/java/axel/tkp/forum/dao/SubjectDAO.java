@@ -1,8 +1,16 @@
 package axel.tkp.forum.dao;
 
 import axel.tkp.forum.database.Database;
+import axel.tkp.forum.model.ForumThread;
+import axel.tkp.forum.util.collectors.ThreadCollector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a DAO for the forum subjects.
@@ -20,13 +28,35 @@ public class SubjectDAO implements AbstractDataAccessObject {
     @Override
     public ResultSet getAll() throws SQLException {
         return database.getConnection()
-                .createStatement().executeQuery("SELECT * FROM Subject");
+                .createStatement().executeQuery("SELECT * FROM Subject ORDER BY name ASC");
     }
 
     @Override
     public ResultSet getForUID(int uid) throws SQLException {
         return database.getConnection().
-                createStatement().executeQuery("SELECT * FROM Subject WHERE uid = '" + uid + "';");
+                createStatement().executeQuery("SELECT * FROM Subject WHERE id = '" + uid + "';");
     }
-
+    
+    public int getPostCount(int uid) throws SQLException {
+        int result = 0;
+        ThreadDAO threadDao = new ThreadDAO(database);
+        ResultSet rs = threadDao.getForSubject(uid);
+        List<ForumThread> threads = new ThreadCollector(threadDao).collect(rs);
+        return threads.stream().map((thread) -> thread.getPostCount()).reduce(result, Integer::sum);
+    }
+    
+    public String getLastPostTime(int uid) throws SQLException {
+        ThreadDAO threadDao = new ThreadDAO(database);
+        ResultSet rs = threadDao.getForSubject(uid);
+        List<ForumThread> threads = new ThreadCollector(threadDao).collect(rs);
+        List<Timestamp> timestamps = new ArrayList<>();
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for(ForumThread thread : threads) {
+                timestamps.add(new Timestamp(dateFormat.parse(thread.getLastPostDate()).getTime()));
+            }
+        } catch(ParseException parseException) {}
+        Collections.sort(timestamps);
+        return timestamps.isEmpty() ? "none!" : timestamps.get(timestamps.size() - 1).toString();
+    }
 }

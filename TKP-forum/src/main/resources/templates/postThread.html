@@ -1,0 +1,19 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>TKP-Forum</title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body>
+		<center>
+		<form method="POST" th:action="|${baseUrl}/newThread?subject=${subjectId}|" id="comment">
+			Thread title: <input type="text" name="title" style="width: 25%"/><br/>
+			Your username: <input type="text" name="name" style="width: 25%"></input><br/>
+			Your comment: <textarea name="content" form="comment"></textarea><br/>
+			<input type="submit" value="Post"/>
+		</form>
+		</center>
+	</body>
+</html>

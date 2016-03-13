@@ -6,23 +6,32 @@
         <meta charset="UTF-8"/>
     </head>
 
-    <body><center>
-		<h2 th:text="${subtitle}"></h2>
-			<table border="1px solid black" style="width:100%">
-			<tr>
-				<th>Thread name</th>
-				<th>Message count</th>
-				<th>Latest message</th>
-			</tr>
-			<tr th:each="thread: ${threads}">
-				<td>
-					<a th:href="|${baseUrl}/thread?threadId=${thread.threadId}|">
-						<i th:text="${thread.title}"/>
-					</a>
-				</td>
-				<td>1</td>
-				<td><text th:text="${thread.lastPostDate}"/></td>
-			</tr>
-		</table>
-    </center></body>
+    <body>
+		<center>
+			<h2 th:text="${subtitle}"></h2>
+		</center>
+		<a th:href="|${baseUrl}/newThread?subject=${subjectId}|" style="padding-left:10em">New thread</a><br/>
+		<a th:href="|${returnUrl}|" style="padding-left:10em">Back</a>
+		<text style="padding-left:33em">
+			<b>Subject: <text th:text="|${subjectName}|"/></b>
+		</text>
+		<center>
+			<table border="1px solid black" style="width:70%">
+				<tr>
+					<th>Thread name</th>
+					<th>Message count</th>
+					<th>Latest message</th>
+				</tr>
+				<tr th:each="thread: ${threads}">
+					<td>
+						<a th:href="|${baseUrl}/thread?threadId=${thread.threadId}|">
+							<i th:text="${thread.title}"/>
+						</a>
+					</td>
+					<td><text th:text="${thread.postCount}"/></td>
+					<td><text th:text="${thread.lastPostDate}"/></td>
+				</tr>
+			</table>
+		</center>
+	</body>
 </html>

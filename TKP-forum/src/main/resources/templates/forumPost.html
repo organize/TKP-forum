@@ -6,8 +6,14 @@
         <meta charset="UTF-8"/>
     </head>
 
-    <body><center>
-		<h2 th:text="${subtitle}"></h2>
+    <body>
+		<center>
+			<h3>
+				Thread: <text th:text="${subtitle}"/>
+			</h3>
+		</center>
+		<a th:href="|${returnUrl}|" style="padding-left:16em">Back</a>
+		<center>
 			<table border="1px solid black" style="width: 50%; table-layout: fixed;">
 			<tr>
 				<th width="30%">Sender</th>
@@ -15,23 +21,29 @@
 			</tr>
 			<tr th:each="post: ${posts}">
 				<td>
-					<i th:text="${post.sender}"/> @ <i th:text="${post.time}"/>
+					<b th:text="${post.sender}"/> <br/> <i th:text="${post.time}"/>
 				</td>
 				<td style="word-wrap: break-word">
 					<text th:text="${post.content}"/>
 				</td>
 			</tr>
-			<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|">
+			</table>
+			<table border="1px solid black" style="width: 50%">
 				<tr>
-					<td><input type="text" name="name"></input></td>
-					<td><input type="text" name="content"></input></td>
+					<th style="width: 25%">Your name</th>
+					<th>Your comment</th>
+					<th>Send</th>
 				</tr>
-				<input type="submit" value="Send"/>
-			</form>
-		</table>
-		<!--<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|">
-			<input type="text" name="name"></input>
-			<input type="text" name="content"></input>
-			<input type="submit" value="Send"/>-->
-    </center></body>
+				<br/>
+				<br/>
+				<form method="POST" th:action="|${baseUrl}/thread?threadId=${threadId}|" id="comment">
+					<tr>
+						<td><input type="text" name="name" style="width: 70%"></input></td>
+						<td><textarea name="content" form="comment"></textarea></td>
+						<td><input type="submit" value="Send message"/></td>
+					</tr>
+				</form>
+			</table>
+		</center>
+	</body>
 </html>

@@ -2,8 +2,10 @@ package axel.tkp.forum.dao;
 
 import axel.tkp.forum.database.Database;
 import axel.tkp.forum.model.ForumMessage;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Represents a DAO for the forum messages.
@@ -25,15 +27,24 @@ public class MessageDAO implements AbstractDataAccessObject {
      * @throws Exception in case of emergency.
      */
     public void create(ForumMessage message) throws Exception {
-        StringBuilder bldr = new StringBuilder();
-        bldr.append("INSERT INTO Message ");
-        bldr.append("(content, sender, time, threadId) VALUES (");
-        bldr.append(process(message.getContent())).append(", ");
-        bldr.append(process(message.getSender())).append(", ");
-        bldr.append("date('now'), ");
-        bldr.append(process("" + message.getThreadId()));
-        bldr.append(" );");
-        database.update(bldr.toString());
+        /* Affirm that the message instance is valid */
+        if(message.invalid()) {
+            return;
+        }
+        
+        /* Create a prepared statement to prevent injection */
+        PreparedStatement statement = database
+            .getConnection().prepareStatement(
+                "INSERT INTO Message (content, sender, time, threadId) VALUES (?, ?, datetime('now'), ?);");
+        statement.setString(1, message.getContent());
+        statement.setString(2, message.getSender());
+        statement.setInt(3, message.getThreadId());
+        
+        /* Update the latest post on this post's thread */
+        new ThreadDAO(database).updateLatestPost(message.getThreadId());
+        
+        /* Execute the update query */
+        statement.executeUpdate();
     }
     
     /**

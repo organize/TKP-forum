@@ -7,14 +7,16 @@ package axel.tkp.forum.model;
  */
 public class ForumThread {
 
-    private Integer threadId, subjectId;
+    private Integer threadId, subjectId, postCount;
     private String title, lastPostDate;
     
-    public ForumThread(Integer threadId, String title, Integer subjectId, String lastDate) {
+    public ForumThread(Integer threadId, String title, 
+            Integer subjectId, String lastDate, Integer postCount) {
         this.threadId = threadId;
         this.subjectId = subjectId;
         this.title = title;
         this.lastPostDate = lastDate;
+        this.postCount = postCount;
     }
     
     public String getTitle() {
@@ -31,5 +33,13 @@ public class ForumThread {
     
     public Integer getSubjectId() {
         return subjectId;
+    }
+    
+    public Integer getPostCount() {
+        return postCount;
+    }
+
+    public boolean invalid() {
+        return title == null || title.equals("");
     }
 }

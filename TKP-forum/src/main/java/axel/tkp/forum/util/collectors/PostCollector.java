@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A collector implementation to collect forum messages.
+ * 
+ * @author Axel Wallin
+ */
 public class PostCollector implements Collector<ForumMessage> {
 
     @Override

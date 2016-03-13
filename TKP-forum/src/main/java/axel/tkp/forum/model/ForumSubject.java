@@ -8,12 +8,19 @@ package axel.tkp.forum.model;
 
 public class ForumSubject {
 
-    private Integer uid;
-    private String name;
+    private Integer uid, collectivePostCount;
+    private String name, lastPostTime;
     
-    public ForumSubject(Integer uid, String name) {
+    public ForumSubject(Integer uid, String name, 
+            String lastPostTime, Integer collectivePostCount) {
         this.uid = uid;
         this.name = name;
+        this.lastPostTime = lastPostTime;
+        this.collectivePostCount = collectivePostCount;
+    }
+    
+    public Integer getCollectivePostCount() {
+        return collectivePostCount;
     }
     
     public Integer getUid() {
@@ -22,5 +29,9 @@ public class ForumSubject {
     
     public String getName() {
         return name;
+    }
+    
+    public String getLastPostDate() {
+        return lastPostTime;
     }
 }

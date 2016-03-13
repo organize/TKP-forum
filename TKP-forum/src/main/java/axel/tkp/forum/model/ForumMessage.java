@@ -39,4 +39,9 @@ public class ForumMessage {
     public Integer getThreadId() {
         return threadId;
     }
+    
+    public boolean invalid() {
+        return content == null || content.equals("") 
+                || sender == null || sender.equals("");
+    }
 }

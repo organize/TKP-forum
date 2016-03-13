@@ -77,7 +77,7 @@ public class RequestBinder {
         /* When a thread has been selected */
         get("/thread", (req, res) -> {
             int threadId = Integer.parseInt(req.queryParams("threadId"));
-            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
+            return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
 
         /* When posting a new thread */
@@ -106,7 +106,7 @@ public class RequestBinder {
             ForumMessage message 
                     = new ForumMessage(0, content, sender, "", threadId);
             messageDao.create(message);
-            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
+            return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
         
         /* A new thread has been posted */
@@ -126,7 +126,7 @@ public class RequestBinder {
             messageDao.create(message);
             
             res.redirect(Constants.BASE_PATH + "/thread?threadId=" + threadId);
-            return new ModelAndView(getThread(database, threadDao, threadId), "forumPost");
+            return new ModelAndView(getThread(req, database, threadDao, threadId), "forumPost");
         }, new ThymeleafTemplateEngine());
     }
     
@@ -139,9 +139,10 @@ public class RequestBinder {
      * @return a map that contains all the necessary data for the engine.
      * @throws Exception in case of emergency.
      */
-    private static Map getThread(Database database, ThreadDAO threadDao, int threadId) throws Exception {
+    private static Map getThread(Request req, Database database, ThreadDAO threadDao, int threadId) throws Exception {
+        Integer pageId = parseFromParam(req, "page");
         List<ForumMessage> posts = new PostCollector()
-            .collect(new MessageDAO(database).getForThread(threadId));
+            .collect(new MessageDAO(database).getForThreadAndLimit(threadId, pageId));
         ForumThread ownInstance = new ThreadCollector(threadDao)
                 .collect(threadDao.getForUID(threadId)).get(0);
         Map map = new HashMap<>();
@@ -151,7 +152,7 @@ public class RequestBinder {
                 map.get("baseUrl") + "/subject?subjectId=" + ownInstance.getSubjectId());
         map.put("threadId", threadId);
         map.put("posts", posts);
-        map.put("numPages", 4);
+        map.put("numPages", ownInstance.getPostCount() / 10);
         return map;
     }
     

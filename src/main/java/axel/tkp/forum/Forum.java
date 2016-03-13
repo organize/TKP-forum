@@ -72,8 +72,8 @@ public class Forum {
             + "content VARCHAR(100) NOT NULL, sender VARCHAR(30) NOT NULL,"
             + " time TIMESTAMP, threadId INTEGER);");
         result.add("CREATE TABLE thread(id SERIAL PRIMARY KEY, "
-            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES subject(id), "
-            + "FOREIGN KEY(latestPost) REFERENCES message(time));");
+            + "title VARCHAR(30) NOT NULL, subjectId INTEGER, latestPost TIMESTAMP, FOREIGN KEY(subjectId) REFERENCES subject(id)"
+            + ");");
         return result;
     }
 

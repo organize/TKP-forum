@@ -33,7 +33,7 @@ public class ForumMessage {
     }
     
     public String getTime() {
-        return time;
+        return time.substring(0, 16);
     }
     
     public Integer getThreadId() {

@@ -31,10 +31,10 @@
 			<br/>
 			<script th:inline="javascript">
 				/*<![CDATA[*/
-					var pageLabel =  document.createElement("h1")
-					pageLabel.id="Page: ";
-					el.innerHTML = "Page: ";
-					document.body.appendChild(el);
+					var pageLabel =  document.createElement("h1");
+					pageLabel.id = "Page: ";
+					pageLabel.innerHTML = "Page: ";
+					document.body.appendChild(pageLabel);
 					var numPages = [[${numPages}]];
 					var baseUrl = [[${baseUrl}]];
 					var threadId = [[${threadId}]];

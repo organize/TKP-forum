@@ -24,7 +24,7 @@ public class ForumThread {
     }
     
     public String getLastPostDate() {
-        return lastPostDate;
+        return lastPostDate.substring(0, 16);
     }
     
     public Integer getThreadId() {

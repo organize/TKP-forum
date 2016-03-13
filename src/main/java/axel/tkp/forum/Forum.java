@@ -26,7 +26,7 @@ public class Forum {
         /* Main database instance */
         port(5000);
         
-        Database database;
+        Database database = new Database(System.getenv("DATABASE_URL"));
         if(System.getenv("DATABASE_URL") != null) {
             database = new Database(System.getenv("DATABASE_URL"));
         } else {

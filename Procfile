@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp TKP-forum/target/classes:TKP-forum/target/dependency/* axel.tkp.forum.Forum
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* axel.tkp.forum.Forum

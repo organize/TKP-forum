@@ -22,7 +22,7 @@ public class SubjectCollector implements Collector<ForumSubject> {
     }
 
     @Override
-    public ArrayList<ForumSubject> collect(ResultSet rs) throws SQLException {
+    public ArrayList<ForumSubject> collect(ResultSet rs) throws Exception {
         List<ForumSubject> collected = new ArrayList<>();
         while(rs.next()) {
             Integer uid = rs.getInt("id");

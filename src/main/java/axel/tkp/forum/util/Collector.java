@@ -20,6 +20,6 @@ public interface Collector<T> {
      *      is defined upon initialization of this class.
      * @throws SQLException in case of emergency.
      */
-    List<T> collect(ResultSet rs) throws SQLException;
+    List<T> collect(ResultSet rs) throws Exception;
 
 }

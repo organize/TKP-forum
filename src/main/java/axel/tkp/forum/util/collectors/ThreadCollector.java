@@ -22,7 +22,7 @@ public class ThreadCollector implements Collector<ForumThread> {
     }
 
     @Override
-    public ArrayList<ForumThread> collect(ResultSet rs) throws SQLException {
+    public ArrayList<ForumThread> collect(ResultSet rs) throws Exception {
         List<ForumThread> collected = new ArrayList<>();
         while(rs.next()) {
             Integer uid = rs.getInt("id");

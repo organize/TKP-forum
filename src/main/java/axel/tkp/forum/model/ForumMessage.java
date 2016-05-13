@@ -19,10 +19,6 @@ public class ForumMessage {
         this.threadId = threadId;
         this.time = time;
     }
-
-    public ForumMessage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     public String getContent() {
         return content;
